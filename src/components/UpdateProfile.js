@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
-import { Card, Form, Button, Alert } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
+
 export default function UpdateProfile() {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -13,14 +14,14 @@ export default function UpdateProfile() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("hit");
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
-      return setError("Passwords don't match!");
+      return setError("Passwords do not match");
     }
 
     const promises = [];
     setLoading(true);
     setError("");
+
     if (emailRef.current.value !== currentUser.email) {
       promises.push(updateEmail(emailRef.current.value));
     }
@@ -28,16 +29,16 @@ export default function UpdateProfile() {
       promises.push(updatePassword(passwordRef.current.value));
     }
 
-    Promise.all(promises).then(() => {
-      navigate("/")
-        .catch(() => {
-          setError("Failed to update account");
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    });
+    Promise.all(promises)
+      .then(() => {
+        setLoading(false);
+        navigate("/");
+      })
+      .catch(() => {
+        setError("Failed to update account");
+      });
   }
+
   return (
     <>
       <Card>
@@ -63,14 +64,14 @@ export default function UpdateProfile() {
               />
             </Form.Group>
             <Form.Group id="password-confirm">
-              <Form.Label>Confirm Password</Form.Label>
+              <Form.Label>Password Confirmation</Form.Label>
               <Form.Control
                 type="password"
                 ref={confirmPasswordRef}
                 placeholder="Leave blank to keep the same"
               />
             </Form.Group>
-            <Button disabled={loading} type="submit" className="w-100">
+            <Button disabled={loading} className="w-100" type="submit">
               Update
             </Button>
           </Form>

@@ -13,7 +13,7 @@ export default function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("hit");
+    setLoading(false);
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
       return setError("Passwords don't match!");
     }
@@ -21,12 +21,11 @@ export default function Signup() {
       setError("");
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
+      setLoading(false);
       navigate("/");
     } catch {
       setError("Failed to create an account");
     }
-
-    setLoading(false);
   }
   return (
     <>

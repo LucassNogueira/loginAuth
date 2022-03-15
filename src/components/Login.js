@@ -19,12 +19,11 @@ export default function Login() {
       setError("");
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
+      setLoading(false);
       navigate("/");
     } catch {
       setError("Failed to sign in");
     }
-
-    setLoading(false);
   }
   return (
     <>
